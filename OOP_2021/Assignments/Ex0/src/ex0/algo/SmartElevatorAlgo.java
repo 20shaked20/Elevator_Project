@@ -15,12 +15,11 @@ import java.util.Collections;
  */
 
 public class SmartElevatorAlgo implements ElevatorAlgo {
-
-    private static final int UP = 1, DOWN = -1;
+    //private static final int UP = 1, DOWN = -1;//irrelevant for now.
     private Building _building;
 
     private ArrayList<Integer>[] routeList;
-    /*Works like graph theory route, for example (3,5) would be go to floor 3 and then 5 (pickup and deliver)
+    /**Works like graph theory route, for example (3,5) would be go to floor 3 and then 5 (pickup and deliver)
     and (3,5,6,7) will stop at floor 3 then 5 then 6 then 7 and will be represented as elements in the list such that:
     3 -> 5 -> 6 -> 7
     Also, we don't allow an elevator to be in between her routes, such that it is *ALWAYS* in a state before arriving to the first element,
@@ -66,7 +65,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
         return ans;
 
     }
-
+    /** finds the best elevator*/
     private int allocateElevator(int S, int D) { //case 3 - all active, compares the shortest route
         int ans = 0;
 
@@ -84,6 +83,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
         return ans;
     }
 
+    /**this function finds the closest idle elevator to a certain floor.*/
     private int closestIdle(int floor){
         int ans= -1;
         boolean foundIdle=false;
@@ -105,12 +105,15 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
         return ans;
     }
 
-    private void addToRouteSimple(int S, int D, int elev) { //a non-dynamic naive implementation, simply adds S and D to end of the route - like a queue would.
+
+    /**a non-dynamic naive implementation, simply adds S and D to end of the route - like a queue would.*/
+    private void addToRouteSimple(int S, int D, int elev) {
         routeList[elev].add(routeList[elev].size(), S);
         routeList[elev].add(routeList[elev].size(), D);
     }
 
-    private void addToRoute(int S, int D, int elev) { //assigns the route dynamically, O(n)
+    /**assigns the route dynamically, O(n)*/
+    private void addToRoute(int S, int D, int elev) {
         boolean addedSrcFlag = false;
         boolean addedDestFlag = false;
         boolean betweenTwoFloors; //works like a temp
@@ -150,7 +153,8 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
         }
     }
 
-    private boolean isOnRoute(int floor, int elev) { //O(n), checks if a request's floor is on an elevator's route
+    /**O(n), checks if a request's floor is on an elevator's route*/
+    private boolean isOnRoute(int floor, int elev) {
         ArrayList<Integer> route = routeList[elev];
         Elevator elevator = _building.getElevetor(elev);
 
@@ -168,7 +172,8 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
         return false;
     }
 
-    private boolean isInRoute(int floor, int elev){ //checks if a floor is part of the elevator's route array
+    /**checks if a floor is part of the elevator's route array*/
+    private boolean isInRoute(int floor, int elev){
 
         for (int i = 0; i< routeList[elev].size(); i++){
             if (routeList[elev].get(i) == floor)
@@ -178,6 +183,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
     }
 
     //TODO: implement better calculation.
+    /** function to return route_Time of certain elevator.*/
     private double getRouteTime(int elev) {
         Elevator curr = _building.getElevetor(elev);
         ArrayList<Integer> route = routeList[elev];
@@ -194,7 +200,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
 
     }
 
-    // destination method will calculate the time of elevator reaching to SRC, Taken from boaz's code
+    /** destination method will calculate the time of elevator reaching to SRC, Taken from boaz's code*/
     private double dist(int src, int elev) {
         double ans;
         Elevator thisElev = this._building.getElevetor(elev);
