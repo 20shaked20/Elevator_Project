@@ -21,7 +21,9 @@ public class SmartElevatorAlgo_Test {
     }
 
     @Test
-    public void dist(){}
+    public void allocateHelper(){
+
+    }
 
     @Test
     public void cmdElevator(){}
