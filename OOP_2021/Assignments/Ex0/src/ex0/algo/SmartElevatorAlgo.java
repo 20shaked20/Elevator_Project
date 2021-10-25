@@ -6,6 +6,7 @@ import ex0.Elevator;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 
 
 /**
@@ -17,6 +18,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
     //private static final int UP = 1, DOWN = -1;//irrelevant for now.
     private Building _building;
 
+    private HashSet<Integer>[] routeMembers; //allows access to route elements in O(1) time rather than O(n).
     private ArrayList<Integer>[] routeList;
 
     /**
@@ -25,19 +27,25 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
      * 3 -> 5 -> 6 -> 7
      * Also, we don't allow an elevator to be in between her routes, such that it is *ALWAYS* in a state before arriving to the first element,
      * at which point it gets deleted from the route
-     * routeList and routeTimes work the same in the sense that the i'th element represents the i'th elevator like in _building's elevator list
+     * routeList and routeMembers work the same in the sense that the i'th element represents the i'th elevator like in _building's elevator list
      */
 
     public SmartElevatorAlgo(Building b) { //O(n)
         _building = b;
+
         routeList = new ArrayList[b.numberOfElevetors()];
         for (int i = 0; i < routeList.length; i++) {
-            routeList[i] = new ArrayList<Integer>();
+            routeList[i] = new ArrayList<>();
+        }
+
+        routeMembers = new HashSet[b.numberOfElevetors()];
+        for (int i = 0; i < routeMembers.length;i++){
+            routeMembers[i] = new HashSet<>(getFloors());
         }
     }
 
     public int getFloors() {
-        return _building.maxFloor() - _building.minFloor();
+        return Math.abs(_building.maxFloor() - _building.minFloor());
     }
 
     public Building getBuilding() {
@@ -51,7 +59,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
     @Override
     public int allocateAnElevator(CallForElevator c) {
 
-        int ans; //TODO: check rigorously if ans=0 is actually a problem throughout the project.
+        int ans; //TODO: assign an express elevator based on speed, discuss: give credit to random guy from class?
         int S = c.getSrc(), D = c.getDest();
 
         ans = allocateElevator(S, D);
@@ -89,7 +97,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
             return idle;
         }
 
-        for (int i = 1; i < _building.numberOfElevetors(); i++) {
+        for (int i = 0; i < _building.numberOfElevetors(); i++) {
             if (isInRoute(S, _building.getElevetor(i).getID()) && isInRoute(D, _building.getElevetor(i).getID())) {
                 return i;
             }
@@ -132,11 +140,14 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
         //int direction = D > S ? Elevator.UP : Elevator.DOWN;
         routeList[elev].add(routeList[elev].size(), S);
         routeList[elev].add(routeList[elev].size(), D);
+        routeMembers[elev].add(S);
+        routeMembers[elev].add(D);
     }
 
     private void addToRouteSimple(int floor, int elev) {
         //int direction = D > S ? Elevator.UP : Elevator.DOWN;
         routeList[elev].add(routeList[elev].size(), floor);
+        routeMembers[elev].add(floor);
     }
 
     /**
@@ -162,6 +173,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
                 if (betweenTwoFloors) {
                     if (route.get(i) != S && route.get(i + 1) != S) {
                         route.add(i, S);
+                        routeMembers[elev].add(S);
                     }
                     addedSrcFlag = true; //now that it's false we will move on to add D (call Destination).
                 }
@@ -170,6 +182,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
                 if (betweenTwoFloors) {
                     if (route.get(i) != D && route.get(i + 1) != D) {
                         route.add(i, D);
+                        routeMembers[elev].add(D);
                     }
                     addedDestFlag = true; //such that we know it doesn't need to be added as last in route.
                 }
@@ -179,10 +192,13 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
         if ((!addedDestFlag) && (!addedSrcFlag)) { //the case where both S and D must be added at the end of the route.
             route.add(route.size(), S);
             route.add(route.size(), D);
+            routeMembers[elev].add(S);
+            routeMembers[elev].add(D);
         }
 
         if (!addedDestFlag) { //if it wasn't added above then it must be added in the last position.
             route.add(route.size(), D);
+            routeMembers[elev].add(D);
         }
     }
 
@@ -192,7 +208,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
      * @param floor - single floor that should be added to the route of elev
      * @param elev  - the id of the elevator to which floor will be added to its route.
      */
-    private void addToRoute(int floor, int elev) { //assigns a single floor
+    private void addToRoute(int floor, int elev) {
         boolean addedFloorFlag = false;
         boolean betweenTwoFloors; //works like a temp
         ArrayList<Integer> route = routeList[elev];
@@ -203,12 +219,14 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
             if (betweenTwoFloors) {
                 if (route.get(i) != floor && route.get(i + 1) != floor) {
                     route.add(i, floor);
+                    routeMembers[elev].add(floor);
                 }
                 addedFloorFlag = true; //now that it's false we will move on to add D (call Destination).
             }
         }
         if (!addedFloorFlag) { //if it wasn't added above then it must be added in the last position.
             route.add(route.size(), floor);
+            routeMembers[elev].add(floor);
         }
     }
 
@@ -238,11 +256,12 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
      */
     private boolean isInRoute(int floor, int elev) {
 
-        for (int i = 0; i < routeList[elev].size(); i++) {
+       /* for (int i = 0; i < routeList[elev].size(); i++) {
             if (routeList[elev].get(i) == floor)
                 return true;
-        }
-        return false;
+        } */
+        return routeMembers[elev].contains(floor); //currently doesn't help and in fact - makes much much worse for no good reason.
+        //return false;
     }
 
     /* TRY */
@@ -352,6 +371,9 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
                     curr.stop(route.get(0));
                 } else {
                     curr.stop(route.get(0));
+                    if (routeMembers[elev].size()!=0){
+                        routeMembers[elev].remove(route.get(0));
+                    }
                     route.remove(0);
                     curr.goTo(0); //goes to what we assume is first floor.
                 }
