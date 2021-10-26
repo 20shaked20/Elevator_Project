@@ -2,9 +2,8 @@
 
 > Made by Shaked Levi And Yonatan Ratner.
 
->GitHub pages:
-> https://github.com/20shaked20
-> https://github.com/Teklar223
+>Shaked's Gihtub https://github.com/20shaked20
+>Yonatan's github: https://github.com/Teklar223
 
 ### Introduction
 This repository is part of an assigment in an object oriented programming course at Ariel University,
