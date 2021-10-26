@@ -1,25 +1,29 @@
 # Smart Elevators - Assignment[0]
 
-> Made by Shaked Levi And Johnatan Ratner.
+> Made by Shaked Levi And Yonatan Ratner.
 
 >GitHub pages:
 > https://github.com/20shaked20
 > https://github.com/Teklar223
 
 ### Introduction
-This project is an assigment in an object - oriented course at Ariel University.\
-The project is about online algorithm for smart elevators.\
+This repository is part of an assigment in an object oriented programming course at Ariel University,
+Specifically the first assignment, and it is about an online algorithm for smart elevators.
 
 # The difference between offline to online algorithm:
 
-We did some reading on Wikipedia to find out that the difference between both algorithms is whether the input is available from the start, or it changes dynamically to the user's needs.
-Furthermore, some of the times offline algorithms are more effective in time run complexity. However, they can’t solve all the problems, therefore the use of online algorithms.
+Firstly, we must discuss what is an online algorithm, it is an algorithm where we can expect a certain type of input (in our case it is elevator calls),
+but what we cant know for certain is how many inputs there will be, the amount will vary by nature and an online algorithm is made with this fact in mind.
+
+On the other hand, an offline algorithm is an algorithm in which we know what input we receive and how much of it, and we can then proceed with that knowledge in mind,
+Allowing us the luxury of making a simple, if naive, algorithm that almost always works.
+
+For some problems an offline algorithm is plenty, such as complex mathematical models, or an online store where the owner can set his stock manually (even if this is bad practice), but for our needs we require a dynamic approach since we cannot know beforehand how many people will make elevator calls, or when.
+
 
 
 # Offline algorithm for elevator callings:
-*We need to know beforehand how many people are going to call the elevator.
-
-For instance: let’s consider a building with 50 tenants, and assume that this number is constant, thus we can learn the schedule of each tenant and assign them elevators based on their needs, assuming these are also static and constant, for example we could ask a tenant how his day looks like and order an elevator to the floors he needs based on that, and then do so for each tenant until we have an optimized elevator routine based off their supposedly static schedule.
+Let’s consider a building with k tenants, and assume that this number is constant, thus we can learn the schedule of each tenant and assign them elevators based on their needs, assuming these are also static and constant, for example we could ask a tenant how his day looks like and order an elevator to the floors he needs based on that, and then do so for each tenant until we have an optimized elevator routine based off their supposedly static schedule.
 
 Pros:
             -simple
@@ -31,13 +35,10 @@ Cons:
  
 
 
-
 # An online algorithm for elevator callings:
 
-*We can’t tell how many people will use the elevator during the day.
-
-Each time the elevator system gets a call our system will need to decide which elevator to send to our user.
-We’ll give an illustration - the elevator controller gets a call to a certain floor, we have several scenarios to consider:
+Each time the elevator system gets a call our algorithm will decide which elevator to send to the caller,
+But there are several scenarios to consider:
 
 A. No elevator or only some are in motion, in this case we will assign an elevator based on the fastest one to arrive, preferring the ones that are idle.
 
@@ -45,16 +46,16 @@ B. All the elevators are in motion therefore we will assign the closest elevator
 
 C. we have a single idle elevator on a certain floor, but there is an elevator in the same direction to our caller, thus we will send that elevator to him after it’s finished - based off which one will arrive faster and by how much, based off current difference in floors and scheduled tasks (an elevator may arrive faster from floor 1 to 40 than from 50 to 40 but stopping at 49,48...41 along the way).
 
-After our user got inside the elevator, it has some possible options –
+After the caller got inside the elevator, it has some possible options –
 
-1.Picking up another user during the transport to the designated floor our first user wanted to go.
-2.if the elevator crossed the middle floor, it would skip the other floors.
+1.Picking up another user during the transport to the designated floor our first caller wanted to go.
+2.if the elevator crossed a 'middle' floor, it would skip the other floors and go straight to its current destination.
 
 Simplifying the algorithm –
 0. elevators wait for a call (semantic step)
-1. elevators get a call (insert a certain floor destination and source)
+1. elevators get a call (call floor and where to go)
 2. elevator gets to the floor (doors open)
-3. people get in or out based on need, then elevator becomes idle or goes to a default floor if there are no more calls for her to complete, else it repeats from step (2)
+3. people get in or out based on need, then elevator becomes idle or goes to a default floor if there are no more calls for it to complete, else it repeats from step (2)
 4. repeat from step (0)
  
  
@@ -64,8 +65,7 @@ Simplifying the algorithm –
 
 ## SmartElevatorAlgo class
 This class represents a smart algorithm for modern elevators. it attempts to load-balance the elevators while sending the best elevator to a caller.
-The algorithm uses a route system for each elevator and calculates the time it will take to reach to a caller while considering:
-Speed,route and time.
+The algorithm uses a route system for each elevator and calculates the time it will take to reach to a caller while considering speed,route and time.
 
 | **Methods**      |    **Details**        |
 |-----------------|-----------------------|
@@ -92,6 +92,11 @@ Speed,route and time.
 
 # How to use?
 
+As part of the assignment, a simulator was provided that takes the task of implementing some of the interfaces used off our hands.
+Thus our entire work is done through 2 classes, the SmartElevatorAlgo and Ex0_main.
+
+>Ex0_main
+>
 
 
 
