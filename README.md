@@ -110,7 +110,10 @@ the rest is plug and play - part of the simulation given as part of the assignme
 
 #### *SmartElevatorAlgo*
 
-the 'must have' methods are AllocateAnElevator() and cmdElevator().
+If you wish to change our algorithm there are 2 main functions to cocnsider
+These are ``` allocateAnElevator ``` and ``` cmdElevator``` 
+Where ``` allocateAnElevator ``` simply assigns a given call to what our algorithm dictates is the best elevator
+And ``` cmdElevator``` is called every 'Tick' and dictates the movement of an elevator
 
 ## External info:
 - More about online offline algorithms : https://en.wikipedia.org/wiki/Online_algorithm
