@@ -116,4 +116,4 @@ the 'must have' methods are AllocateAnElevator() and cmdElevator().
 - More about online offline algorithms : https://en.wikipedia.org/wiki/Online_algorithm
 - More about Elevator Scheduling : https://github.com/00111000/Elevator-Scheduling-Simulator/blob/master/research-papers/Context-Aware-Elevator-Scheduling.pdf
 - More about Smart Elevators : https://www.geeksforgeeks.org/smart-elevator-pro-geek-cup/
--                            : https://www.npr.org/templates/story/story.php?storyId=6799860
+- See Also                   : https://www.npr.org/templates/story/story.php?storyId=6799860
