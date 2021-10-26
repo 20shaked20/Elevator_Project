@@ -2,7 +2,7 @@
 
 > Made by Shaked Levi And Yonatan Ratner.
 
->Shaked's Gihtub https://github.com/20shaked20
+>Shaked's github https://github.com/20shaked20
 >
 >Yonatan's github: https://github.com/Teklar223
 
@@ -10,7 +10,7 @@
 This repository is part of an assigment in an object oriented programming course at Ariel University,
 Specifically the first assignment, and it is about an online algorithm for smart elevators.
 
-# The difference between offline to online algorithm:
+## The difference between offline to online algorithm:
 
 Firstly, we must discuss what is an online algorithm, it is an algorithm where we can expect a certain type of input (in our case it is elevator calls),
 but what we cant know for certain is how many inputs there will be, the amount will vary by nature and an online algorithm is made with this fact in mind.
@@ -22,20 +22,20 @@ For some problems an offline algorithm is plenty, such as complex mathematical m
 
 
 
-# Offline algorithm for elevator callings:
+## Offline algorithm for elevator callings:
 Let’s consider a building with k tenants, and assume that this number is constant, thus we can learn the schedule of each tenant and assign them elevators based on their needs, assuming these are also static and constant, for example we could ask a tenant how his day looks like and order an elevator to the floors he needs based on that, and then do so for each tenant until we have an optimized elevator routine based off their supposedly static schedule.
 
-Pros:
+-Pros:
             -simple
             -comfortable
-Cons:
+-Cons:
             -limiting approach
             -static and requires much maintenance
             -not human (humans aren’t robotic to a schedule)
  
 
 
-# An online algorithm for elevator callings:
+## An online algorithm for elevator callings:
 
 Each time the elevator system gets a call our algorithm will decide which elevator to send to the caller,
 But there are several scenarios to consider:
@@ -90,18 +90,30 @@ The algorithm uses a route system for each elevator and calculates the time it w
 
 
 
-# How to use?
+## How to use?
 
 As part of the assignment, a simulator was provided that takes the task of implementing some of the interfaces used off our hands.
-Thus our entire work is done through 2 classes, the SmartElevatorAlgo and Ex0_main.
+Thus our entire work is done through 2 classes, SmartElevatorAlgo and Ex0_main.
 
->Ex0_main
->
+#### *Ex0_main*
+there are 2 important lines that change which test case is run, and on what algorithm:
+this line (line 17) decides which test case to run from 10 possible cases.
+```
+int stage = 7;  // any case in [0,9].
+```
+and this line (line 26) which declares exactly which algorithm is getting executed by creating it as an ElevatorAlgo object.
+```
+ElevatorAlgo ex0_alg = new SmartElevatorAlgo(Simulator_A.getBuilding());
+```
 
+the rest is plug and play - part of the simulation given as part of the assignment.
 
+#### *SmartElevatorAlgo*
+
+the 'must have' methods are AllocateAnElevator() and cmdElevator().
 
 ## External info:
 - More about online offline algorithms : https://en.wikipedia.org/wiki/Online_algorithm
 - More about Elevator Scheduling : https://github.com/00111000/Elevator-Scheduling-Simulator/blob/master/research-papers/Context-Aware-Elevator-Scheduling.pdf
 - More about Smart Elevators : https://www.geeksforgeeks.org/smart-elevator-pro-geek-cup/
-- More about Smart Elevators_2 : https://www.npr.org/templates/story/story.php?storyId=6799860
+-                            : https://www.npr.org/templates/story/story.php?storyId=6799860
