@@ -10,7 +10,7 @@
 This repository is part of an assigment in an object oriented programming course at Ariel University,
 Specifically the first assignment, and it is about an online algorithm for smart elevators.
 
-## The difference between offline to online algorithm:
+## The difference between offline and online algorithm:
 
 Firstly, we must discuss what is an online algorithm, it is an algorithm where we can expect a certain type of input (in our case it is elevator calls),
 but what we cant know for certain is how many inputs there will be, the amount will vary by nature and an online algorithm is made with this fact in mind.
@@ -85,35 +85,36 @@ The algorithm uses a route system for each elevator and calculates the time it w
 | `cmdElevator()` | Operator function for elevator |
 
 
-###### Private Methods 
-//TODO : Explains more maybe?
+### A note on public/private methods 
+With the exception of ``` allocateAnElevator ``` and ``` cmdElevator ```, all of the methods listed are tagged private.
 
 
 
 ## How to use?
 
-As part of the assignment, a simulator was provided that takes the task of implementing some of the interfaces used off our hands.
+As part of the assignment, a simulator was provided that takes the task of implementing some of the interfaces off of our hands. </br>
 Thus our entire work is done through 2 classes, SmartElevatorAlgo and Ex0_main.
 
 #### *Ex0_main*
-there are 2 important lines that change which test case is run, and on what algorithm:
-this line (line 17) decides which test case to run from 10 possible cases.
+there are 2 important lines that change which test case is run, and on what algorithm: </br>
+this line (line 17) decides which test case to run from 10 possible cases. </br>
 ```
-int stage = 7;  // any case in [0,9].
+int stage = 7;  // any case in [0,9]. 
 ```
-and this line (line 26) which declares exactly which algorithm is getting executed by creating it as an ElevatorAlgo object.
+and this line (line 26) which declares exactly which algorithm is getting executed by creating it as an ElevatorAlgo object. </br>
 ```
 ElevatorAlgo ex0_alg = new SmartElevatorAlgo(Simulator_A.getBuilding());
 ```
 
-the rest is plug and play - part of the simulation given as part of the assignment.
+the rest is plug and play - part of the simulation given in the assignment.
 
 #### *SmartElevatorAlgo*
 
-If you wish to change our algorithm there are 2 main functions to cocnsider
-These are ``` allocateAnElevator ``` and ``` cmdElevator``` 
-Where ``` allocateAnElevator ``` simply assigns a given call to what our algorithm dictates is the best elevator
-And ``` cmdElevator``` is called every 'Tick' and dictates the movement of an elevator
+If you wish to change our algorithm there are 2 main functions to consider these are: </br>
+``` allocateAnElevator ``` assigns a given call to what our algorithm dictates is the best elevator </br>
+``` cmdElevator ``` is called every 'Tick' and dictates the movement of an elevator
+
+Do note however that ``` allocateAnElevator ``` calls helper functions, and some of those also call simpler helper function.
 
 ## External info:
 - More about online offline algorithms : https://en.wikipedia.org/wiki/Online_algorithm
