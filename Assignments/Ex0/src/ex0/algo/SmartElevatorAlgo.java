@@ -13,7 +13,7 @@ import java.util.HashSet;
  * This class represents a smart algorithm for modern elevators. it attempts to load-balance the elevators while sending the best elevator to a caller.
  * The algorithm uses a route system for each elevator and calculates the time it will take to reach to a caller while considering:
  * Speed,route and time.
- *
+ * <p>
  * It is also of note that the time complexity is O(n) and space complexity is O(n*k) where n is the amount of elevator's and k is the amount of floors
  */
 
@@ -23,6 +23,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
 
     private HashSet<Integer>[] routeMembers; //allows access to route elements in O(1) time rather than O(n).
     private ArrayList<Integer>[] routeList;
+
     /*
      * Works like graph theory route, for example (3,5) would be - go to floor 3 and then 5 (pickup and deliver)
      * and (3,5,6,7) will stop at floor 3 then 5 then 6 then 7 and will be represented as elements in the list such that:
@@ -107,11 +108,12 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
      * @param D - an integer destination
      * @return the elevator that the algorithm decides is best to send to a call, represented by its id.
      */
+
     private int allocateHelper(int S, int D) {
         int ans = 0;
         int direction = D > S ? 1 : -1; // 1 if the call is going up or -1 if it's down.
 
-        int idle = bestIdle(D);
+        int idle = bestIdle(S);
         if (idle != -1 && _building.numberOfElevetors() != 1) {
             return idle;
         }
@@ -121,34 +123,39 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
             int elev_state = _building.getElevetor(i).getState();
             double elev_speed = _building.getElevetor(i).getSpeed();
 
-            if (isInRoute(S, i_Elev) && isInRoute(D, i_Elev)) {
+            if (isInRoute(S, _building.getElevetor(i).getID()) && isInRoute(D, _building.getElevetor(i).getID())) {
                 return i;
             } else {
-                if (isInRoute(S, i_Elev) && direction == elev_state) {
+                if (isInRoute(S, _building.getElevetor(i).getID()) && direction == _building.getElevetor(i).getState()) {
                     if (routeList[i].size() < maxRouteSize)
                         ans = i;
                 }
             }
+
+            // >> better run time for case 8-7 but 9 falls
+
+
             /* ^ if it's in the route or on the way as is then we just return this elevator. ^ */
+
             if (routeList[i].size() < maxRouteSize) {
-                if (elev_speed > _building.getElevetor(ans).getSpeed() && direction == elev_state) {
+                if (_building.getElevetor(i).getSpeed() > _building.getElevetor(ans).getSpeed() && direction == _building.getElevetor(i).getState()) {
                     if (routeList[i].size() < routeList[ans].size())
                         ans = i;
-                } else if (elev_speed > _building.getElevetor(ans).getSpeed()) {
+                } else if (_building.getElevetor(i).getSpeed() > _building.getElevetor(ans).getSpeed()) {
                     if (routeList[i].size() < routeList[ans].size())
                         ans = i;
-                } else if (direction == elev_state) {
-                    if (_building.getElevetor(i).getPos() < S && direction == 1) { //case where direction is up
-                        if (routeList[i_Elev].size() > 1) {
-                            if (routeList[i_Elev].get(1) > S)
+                } else if (direction == _building.getElevetor(i).getState()) {
+                    if (_building.getElevetor(i).getPos() < S && direction == Elevator.UP) { //case where direction is up
+                        if (routeList[_building.getElevetor(i).getID()].size() > 1) {
+                            if (routeList[_building.getElevetor(i).getID()].get(1) > S)
                                 ans = i;
                         } else {
                             return i; //found a near empty elevator that is already in the same direction...
                         }
                     }
-                    if (_building.getElevetor(i).getPos() > S && direction == -1) { //case where direction is down
-                        if (routeList[i_Elev].size() > 1) {
-                            if (routeList[i_Elev].get(1) < S)
+                    if (_building.getElevetor(i).getPos() > S && direction == Elevator.DOWN) { //case where direction is down
+                        if (routeList[_building.getElevetor(i).getID()].size() > 1) {
+                            if (routeList[_building.getElevetor(i).getID()].get(1) < S)
                                 ans = i;
                         } else {
                             return i; //found a near empty elevator that is already in the same direction...
@@ -160,7 +167,14 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
                     }
                 }
             }
+            if ((isOnRoute(S, _building.getElevetor(i).getID()) && isOnRoute(D, _building.getElevetor(i).getID())) && _building.getElevetor(i).getSpeed() >= _building.getElevetor(ans).getSpeed()) {
+                if (routeList[i].size() < maxRouteSize)
+                    return i;
+                if (routeList[i].size() < routeList[ans].size())
+                    ans = i;
+            }
         }
+
 
         return ans;
     }
@@ -440,6 +454,3 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
         return Math.abs(_building.maxFloor() - _building.minFloor());
     }
 }
-
-
-

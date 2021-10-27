@@ -1,30 +1,36 @@
 import ex0.Building;
-import ex0.*;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import ex0.simulator.Simulator_A;
+import org.junit.jupiter.api.Test;
 
-public class SmartElevatorAlgo_Test {
-
+class SmartElevatorAlgo {
 
 
-    @Test
-    public void getBuilding(){
+    Building b1;
+    Building b9;
+    SmartElevatorAlgo algoB1;
+    SmartElevatorAlgo algoB9;
 
-    }
+    public SmartElevatorAlgo() {
 
-    @Test
-    public void algoName(){}
+        Simulator_A.initData(1, null);
+        b1 = Simulator_A.getBuilding();
+        Simulator_A.initData(9, null);
+        b9 = Simulator_A.getBuilding();
 
-    @Test
-    public void allocateAnElevator(){
-
-    }
-
-    @Test
-    public void allocateHelper(){
+        //algoB1 = new SmartElevatorAlgo(b1);
+        //algoB9 = new SmartElevatorAlgo(b9);
 
     }
 
     @Test
-    public void cmdElevator(){}
+    void allocateAnElevator() {
+
+
+    }
+
+    @Test
+    void cmdElevator() {
+
+
+    }
 }
