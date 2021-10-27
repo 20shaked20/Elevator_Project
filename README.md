@@ -26,11 +26,13 @@ For some problems an offline algorithm is plenty, such as complex mathematical m
 Let’s consider a building with k tenants, and assume that this number is constant, thus we can learn the schedule of each tenant and assign them elevators based on their needs, assuming these are also static and constant, for example we could ask a tenant how his day looks like and order an elevator to the floors he needs based on that, and then do so for each tenant until we have an optimized elevator routine based off their supposedly static schedule.
 
 >Pros:
+>
  > 1.simple
  > 
  > 2.comfortable          
-            
+ >          
 >Cons:
+>
 > 1.limiting approach
 > 
 > 2.static and requires much maintenanc
