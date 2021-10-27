@@ -27,11 +27,14 @@ Let’s consider a building with k tenants, and assume that this number is const
 
 >Pros:
  > 1.simple
+ > 
  > 2.comfortable          
             
 >Cons:
 > 1.limiting approach
+> 
 > 2.static and requires much maintenanc
+> 
 > 3.not human (humans aren’t robotic to a schedule)
  
 
