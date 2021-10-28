@@ -21,6 +21,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
 
     private Building _building;
 
+    private final int maxRouteSize = 16;
     private HashSet<Integer>[] routeMembers; //allows access to route elements in O(1) time rather than O(n).
     private ArrayList<Integer>[] routeList;
 
