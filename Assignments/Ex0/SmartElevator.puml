@@ -1,0 +1,24 @@
+@startuml
+
+class SmartElevatorAlgo{
+-_building : Building
+- maxRouteSize : Int
+- routeMembers : HashSet[]
+- routeList : ArrayList[]
++SmartElevatorAlgo()
++getBuilding()
++algoName()
++allocateAnElevator()
++allocateHelper()
++bestIdle()
++addToRouteSimple()
++addToRouteSimple()
++isBetween()
++isInRoute()
++getRouteTime()
++getFloorDiff()
++distanceFromIdleElevToFloor()
++cmdElevator()
+}
+
+@enduml
