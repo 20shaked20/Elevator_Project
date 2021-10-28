@@ -21,6 +21,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
 
     private Building _building;
 
+    private final int maxRouteSize = 16;
     private HashSet<Integer>[] routeMembers; //allows access to route elements in O(1) time rather than O(n).
     private ArrayList<Integer>[] routeList;
 
@@ -33,6 +34,15 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
      * routeList and routeMembers work the same in the sense that the i'th element represents the i'th elevator like in _building's elevator list
      */
 
+
+    /**
+     * IMPORTANT: this is a TEST-ONLY method and should be treated as an assignment function that you wouldn't see in production,
+     * but there is no point in removing it since this method is very important for testing.
+     * @return a pointer to the routeList array
+     */
+    public ArrayList<Integer>[] getRouteList(){
+        return this.routeList;
+    }
 
     /**
      * initiates algorithm as an object
@@ -79,7 +89,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
      * The main function for allocating an elevator.
      * this function is heavily reliant on the allocateHelper Method
      * @param c - a call for an elevator, contains call source and destination - please see allocateAnElevator Interface for detail.
-     * @return
+     * @return the best elevator for the call according to out algorithm
      */
     public int allocateAnElevator(CallForElevator c) {
         int ans;
@@ -132,9 +142,6 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
                 }
             }
 
-            // >> better run time for case 8-7 but 9 falls
-
-
             /* ^ if it's in the route or on the way as is then we just return this elevator. ^ */
 
             if (routeList[i].size() < maxRouteSize) {
@@ -175,7 +182,6 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
             }
         }
 
-
         return ans;
     }
 
@@ -191,7 +197,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
         boolean foundIdle = false;
 
         for (int i = 0; i < _building.numberOfElevetors(); i++) {
-            if (_building.getElevetor(i).getState() == 0) {
+            if (_building.getElevetor(i).getState() == Elevator.LEVEL) {
                 if (!foundIdle) {
                     foundIdle = true;
                     ans = i;
@@ -261,7 +267,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
 
 
     /**
-     * returns the time it will take to complete an elvator's current route.
+     * returns the time it will take to complete an elevator's current route.
      *
      * @param elev the elevator ID for which we check the route time.
      * @return total route time in seconds.
@@ -312,10 +318,26 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
         return floors * (speed + floorTime);
     }
 
+    private boolean isOnRoute(int floor, int elev) {
+        ArrayList<Integer> route = routeList[elev];
+        Elevator elevator = _building.getElevetor(elev);
+
+        if (route.size() != 0) {
+            if ((elevator.getPos() <= floor && floor <= route.get(0)) || (route.get(0) <= floor && floor <= elevator.getPos())) {
+                return true;
+            }
+        }
+        for (int i = 0; i < route.size() - 1; i++) {
+            if ((route.get(i) <= floor && floor <= route.get(i + 1)) || (route.get(i + 1) <= floor && floor <= route.get(i))) {
+                //if src is between the 2 consecutive elements of the route array - accounts for cases where one is above the next or vice-versa
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
-    /**
-     * command line for elevator, it tells the elevator what to do next
+    /** command line for elevator, it tells the elevator what to do next.
      * @param elev the current Elevator ID on which the operation is performed.
      */
     public void cmdElevator(int elev) {
@@ -341,7 +363,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
+    /*
      * There are some methods that we didn't use eventually, either because we didn't need them or couldn't implement them well enough.
      * We wanted to keep these just in case better ideas would pop to mind on how to use it, or they may come in handy later.
      *
@@ -351,7 +373,7 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
      * And because we're proud of them.
      */
 
-    /**
+    /*
      * (A)
      * add  S,D to the elevator route in the proper location.
      *
@@ -427,23 +449,6 @@ public class SmartElevatorAlgo implements ElevatorAlgo {
      * @param elev  the id of the elevator to check if the floor is on its route.
      * @return true or false in case the floor is on the route
      */
-    private boolean isOnRoute(int floor, int elev) {
-        ArrayList<Integer> route = routeList[elev];
-        Elevator elevator = _building.getElevetor(elev);
-
-        if (route.size() != 0) {
-            if ((elevator.getPos() <= floor && floor <= route.get(0)) || (route.get(0) <= floor && floor <= elevator.getPos())) {
-                return true;
-            }
-        }
-        for (int i = 0; i < route.size() - 1; i++) {
-            if ((route.get(i) <= floor && floor <= route.get(i + 1)) || (route.get(i + 1) <= floor && floor <= route.get(i))) {
-                //if src is between the 2 consecutive elements of the route array - accounts for cases where one is above the next or vice-versa
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * (D)

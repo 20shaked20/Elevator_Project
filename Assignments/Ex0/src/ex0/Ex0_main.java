@@ -3,7 +3,10 @@ package ex0;
 import ex0.algo.ElevatorAlgo;
 import ex0.algo.ShabatElev3Algo;
 import ex0.algo.SmartElevatorAlgo;
+import ex0.algo.SmartElevatorAlgoTest;
 import ex0.simulator.Simulator_A;
+
+import java.net.URL;
 
 /**
  * This is the main file of Ex0 (OOP), Do play with it and make sure you know how to operate the simulator before
@@ -14,9 +17,22 @@ public class Ex0_main {
     public static void main(String[] ar) {
         String codeOwner = codeOwner();
         Simulator_A.setCodeOwner(codeOwner);
-        int stage =8;  // any case in [0,9].
-        System.out.println("Ex0 Simulator: isStarting, stage="+stage+") ... =  ");
-        String callFile = null; // use the predefined cases [1-9].
+        int stage =7;  // any case in [0,9].
+
+        String stageTemp = ""+stage; //added such that the print message can relay whether it's running a test case or not.
+        String callFile = null; // use the predefined cases [1-9]
+
+        /* TESTING ONLY SEGMENT! */
+        boolean Test = false; //change to true for testing or false for the algorithm.
+        if (Test) {
+            stage = 7; //currently, running testCase for this stage
+            stageTemp = "TEST"; //stage name for print message
+            URL fileLocation = SmartElevatorAlgoTest.class.getResource("TestCalls"); //retrieves the TestCalls.txt relative location
+            callFile = fileLocation.getPath(); // sets the call file to this one, the buildings still change from case to case
+        }
+        /* TESTING ONLY SEGMENT!*/
+
+        System.out.println("Ex0 Simulator: isStarting, stage="+stageTemp+") ... =  ");
         // String callFile = "data/Ex0_stage_2__.csv"; //
         Simulator_A.initData(stage, callFile);  // init the simulator data: {building, calls}.
 
