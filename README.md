@@ -122,7 +122,7 @@ If you wish to change our algorithm there are 2 main functions to consider these
 
 Do note however that ``` allocateAnElevator ``` calls helper functions, and some of those also call simpler helper function.
 
-### Testing-
+### Testing
 We have attempted to implement a Junit tester class, but found this solution to be more practical: </br>
 ```
 boolean Test = false; //in line 26, change to true if you wish to run a test
@@ -158,6 +158,19 @@ and multiple would look like this:
 ```
 Important: assigned elevator should always be 0, and call 'state' be -1, what's important is when the call is made (in double representing seconds),
 and call source and destination.
+
+## Lessons Learned
+#### Things to improve
+1. Organised work is best
+2. Carfeul planning
+3. Understanding what tools we have better, before diving in
+4. Understanding how testing might work is the first 'order of business'.
+
+#### things to keep
+1. Good source control
+2. Good documentation
+3. Many small functions (see next point)
+4. Readable code (in some cases there was no avoiding messy lines)
 
 ## File Hierarchy
 ![image](https://user-images.githubusercontent.com/73063105/139245974-402bbc69-3de0-4fad-9ebe-ddfee8969749.png)
