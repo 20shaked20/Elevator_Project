@@ -122,6 +122,59 @@ If you wish to change our algorithm there are 2 main functions to consider these
 
 Do note however that ``` allocateAnElevator ``` calls helper functions, and some of those also call simpler helper function.
 
+### Testing
+We have attempted to implement a Junit tester class, but found this solution to be more practical: </br>
+```
+boolean Test = false; //in line 26, change to true if you wish to run a test
+if (Test) {
+    stage = 7; //currently, running testCase for this stage
+    stageTemp = "TEST"; //stage name for print message
+    URL fileLocation = SmartElevatorAlgoTest.class.getResource("TestCalls"); //retrieves the TestCalls.txt relative location
+    callFile = fileLocation.getPath(); // sets the call file to this one, the buildings still change from case to case 
+}
+```
+This works much like a 'man in the middle' where we call our testing function and it in turn calls our algorithm and along they way
+makes certain checks, and prints a message if something is wrong. </br>
+
+note that it uses a 'callFile' named TestCalls - see File Hierarchy. </br>
+
+if you wish to make your own call file the syntax is as follows:
+
+```
+declaring call, when it is made, call source, call destination, assigned elevator, call 'state'  
+    |                |                |             |                    |              |
+    V                V                V             V                    V              V
+Elevator call,      0.5,              0,            20 ,                 0         ,   -1
+
+would look like this in the file:
+Elevator call,0.5,0,20,0,-1
+
+and multiple would look like this:
+ Elevator call,0.5,0,20,0,-1
+ Elevator call,0.5,20,3,0,-1
+ Elevator call,0.5,0,-1,0,-1
+ Elevator call,0.5,0,-1,0,-1
+ Elevator call,1.0,-5,-10,0,-1
+```
+Important: assigned elevator should always be 0, and call 'state' be -1, what's important is when the call is made (in double representing seconds),
+and call source and destination.
+
+## Lessons Learned
+#### Things to improve
+1. Organised work is best
+2. Carfeul planning
+3. Understanding what tools we have better, before diving in
+4. Understanding how testing might work is the first 'order of business'.
+
+#### things to keep
+1. Good source control
+2. Good documentation
+3. Many small functions (see next point)
+4. Readable code (in some cases there was no avoiding messy lines)
+
+## File Hierarchy
+![image](https://user-images.githubusercontent.com/73063105/139245974-402bbc69-3de0-4fad-9ebe-ddfee8969749.png)
+
 ## External info:
 - More about online offline algorithms : https://en.wikipedia.org/wiki/Online_algorithm
 - More about Elevator Scheduling : https://github.com/00111000/Elevator-Scheduling-Simulator/blob/master/research-papers/Context-Aware-Elevator-Scheduling.pdf
